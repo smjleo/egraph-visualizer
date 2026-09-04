@@ -72,7 +72,7 @@ function renderNode(node: FlowNode, classPositions: Map<string, { x: number; y: 
   const strokeWidth = node.selected ? 2 : 1;
   const rect =
     `<rect x="${round(x)}" y="${round(y)}" width="${round(width)}" height="${round(height)}" rx="${cornerRadius}" ` +
-    `fill="white" stroke="${stroke}" stroke-width="${strokeWidth}"/>`;
+    `fill="${escapeXML(node.data.color || "white")}" stroke="${stroke}" stroke-width="${strokeWidth}"/>`;
   const label =
     `<text x="${round(width / 2)}" y="${round(height / 2 + labelFontSize * baselineShift)}" font-size="${labelFontSize}" text-anchor="middle"` +
     `${subsumed ? ` fill="${gray300}"` : ""}>${escapeXML(node.data.label)}</text>`;

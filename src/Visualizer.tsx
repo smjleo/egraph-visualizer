@@ -96,9 +96,10 @@ export function ENode(
   const outline = subsumed && selected ? "outline-indigo-100" : subsumed ? "outline-gray-300" : selected ? "outline-indigo-600" : "outline-black";
   return (
     <div
-      className={`p-1 rounded-md outline bg-white ${outline} h-full w-full ${
+      className={`p-1 rounded-md outline ${outline} h-full w-full ${
         props?.selected ? "outline-2" : "outline-1"
       }`}
+      style={{ backgroundColor: props?.data?.color || "white" }}
       ref={props?.outerRef}
     >
       {props?.outerRef ? <></> : <MyNodeToolbar type="node" id={props!.data!.id} selected={selected} />}

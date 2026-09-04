@@ -71,10 +71,14 @@ type EGraphNode = {
   eclass: EGraphClassID;
   cost: number;
   subsumed?: boolean;
+  /// Optional background color for this node, e.g. to highlight an extracted term
+  color?: string;
 };
 
 type EGraphClassData = {
   type?: string;
+  /// Optional background color, overriding the color derived from `type`
+  color?: string;
 };
 type EGraph = {
   nodes: { [id: EGraphNodeID]: EGraphNode };
@@ -102,6 +106,7 @@ export type FlowNode = Node<
     id: string;
     subsumed?: boolean;
     selected: boolean;
+    color?: string;
   },
   "node"
 >;
@@ -287,11 +292,11 @@ function toELKNode(
   elkRoot.layoutOptions!["elk.aspectRatio"] = aspectRatio as unknown as string;
   for (const [classID, nodes] of classToNodes.entries()) {
     const elkClassID = `class-${classID}`;
-    const extra = class_data[classID] ? Object.fromEntries(Object.entries(class_data[classID]!).filter(([key]) => key !== "type")) : {};
+    const extra = class_data[classID] ? Object.fromEntries(Object.entries(class_data[classID]!).filter(([key]) => key !== "type" && key !== "color")) : {};
     const selected = selectedNodes.some((n) => n.type === "class" && n.id === classID);
     const elkClass: MyELKNode["children"][0] = {
       id: elkClassID,
-      data: { color: colors.get(class_data[classID]?.type)!, id: classID, extra, selected },
+      data: { color: class_data[classID]?.color ?? colors.get(class_data[classID]?.type)!, id: classID, extra, selected },
       layoutOptions: classLayoutOptions(Object.keys(extra).length),
       children: [],
       ports: mergeEdges
@@ -309,7 +314,7 @@ function toELKNode(
       const selected = selectedNodes.some((n) => n.type === "node" && n.id === nodeID);
       const elkNode: MyELKNode["children"][0]["children"][0] = {
         id: elkNodeID,
-        data: { label: node.op, id: nodeID, ...(node.subsumed ? { subsumed: true } : {}), selected },
+        data: { label: node.op, id: nodeID, ...(node.subsumed ? { subsumed: true } : {}), ...(node.color ? { color: node.color } : {}), selected },
         width: size.width,
         height: size.height,
         ports: [],
