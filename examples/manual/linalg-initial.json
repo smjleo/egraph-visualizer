@@ -1,0 +1,55 @@
+{
+  "nodes": {
+    "sum": {
+      "op": "Sum",
+      "children": [
+        "acc",
+        "product"
+      ],
+      "eclass": "sum"
+    },
+    "product": {
+      "op": "Mul",
+      "children": [
+        "b",
+        "a_alpha"
+      ],
+      "eclass": "product"
+    },
+    "a_alpha": {
+      "op": "Mul",
+      "children": [
+        "a",
+        "alpha"
+      ],
+      "eclass": "a_alpha"
+    },
+    "acc": {
+      "op": "%acc",
+      "eclass": "acc"
+    },
+    "a": {
+      "op": "%a",
+      "eclass": "a"
+    },
+    "b": {
+      "op": "%b",
+      "eclass": "b"
+    },
+    "alpha": {
+      "op": "%alpha",
+      "eclass": "alpha"
+    }
+  },
+  "class_data": {
+    "sum": {
+      "type": "f64"
+    },
+    "product": {
+      "type": "f64"
+    },
+    "a_alpha": {
+      "type": "f64"
+    }
+  }
+}

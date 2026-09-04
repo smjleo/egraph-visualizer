@@ -9,14 +9,19 @@ const padding = 10;
 const cornerRadius = 6;
 // Matches tailwind `p-1`
 const nodePadding = 4;
-// Matches tailwind `text-base`
-const labelFontSize = 16;
+// Matches the inline `text-[10px]` used for node labels
+const labelFontSize = 10;
+// Vertical offset from the visual centre of a line of text to its baseline, as a fraction of the font size.
+// Used instead of `dominant-baseline`, which many SVG renderers outside browsers ignore.
+const baselineShift = 0.35;
+// Distance from the top of a line to its baseline, as a fraction of the font size
+const ascent = 0.8;
 // Matches the inline font size used for extra class data
 const extraFontSize = 6;
 // Matches `extra_padding` in layout.ts, the vertical space per extra class item
 const extraLineHeight = 8;
 // Matches tailwind `font-mono`
-const fontFamily = 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace';
+const fontFamily = '"Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace';
 
 // Tailwind colors used in the visualizer
 const indigo600 = "#4f46e5";
@@ -48,7 +53,7 @@ function renderClass(node: FlowClass): string {
     .map(([key, value], index) => {
       const lineY = nodePadding + index * extraLineHeight;
       const keySpan = key === "" ? "" : `<tspan font-weight="bold">${escapeXML(key)}</tspan><tspan xml:space="preserve"> </tspan>`;
-      return `<text x="${nodePadding}" y="${round(lineY)}" font-size="${extraFontSize}" dominant-baseline="hanging" xml:space="preserve">${keySpan}${escapeXML(value)}</text>`;
+      return `<text x="${nodePadding}" y="${round(lineY + extraFontSize * ascent)}" font-size="${extraFontSize}" xml:space="preserve">${keySpan}${escapeXML(value)}</text>`;
     })
     .join("");
   const extra = extraLines ? clippedText({ x, y, width, height }, extraLines) : "";
@@ -69,7 +74,7 @@ function renderNode(node: FlowNode, classPositions: Map<string, { x: number; y: 
     `<rect x="${round(x)}" y="${round(y)}" width="${round(width)}" height="${round(height)}" rx="${cornerRadius}" ` +
     `fill="white" stroke="${stroke}" stroke-width="${strokeWidth}"/>`;
   const label =
-    `<text x="${round(width / 2)}" y="${round(height / 2)}" font-size="${labelFontSize}" text-anchor="middle" dominant-baseline="central"` +
+    `<text x="${round(width / 2)}" y="${round(height / 2 + labelFontSize * baselineShift)}" font-size="${labelFontSize}" text-anchor="middle"` +
     `${subsumed ? ` fill="${gray300}"` : ""}>${escapeXML(node.data.label)}</text>`;
   return `<g id="${escapeXML(node.id)}">${rect}${clippedText({ x, y, width, height }, label)}</g>`;
 }

@@ -104,7 +104,7 @@ export function ENode(
       {props?.outerRef ? <></> : <MyNodeToolbar type="node" id={props!.data!.id} selected={selected} />}
 
       <div
-        className={`font-mono text-base truncate max-w-96 min-w-6 text-center ${subsumed ? "text-gray-300" : ""}`}
+        className={`font-mono text-[10px] leading-[14px] truncate max-w-96 min-w-6 text-center ${subsumed ? "text-gray-300" : ""}`}
         title={`${props?.data?.id}\n${props?.data?.label}`}
         ref={props?.innerRef}
       >
@@ -421,7 +421,15 @@ function LayoutFlow({
   const layoutQuery = useQuery({
     queryKey: ["layout", egraph, getNodeSize, aspectRatio, selectedNodes, previousLayout, mergeEdges],
     networkMode: "always",
-    queryFn: ({ signal }) => layoutGraph(egraph, getNodeSize, aspectRatio, selectedNodes, previousLayout, mergeEdges, signal),
+    queryFn: async ({ signal }) => {
+      // Node sizes are measured from the DOM, so make sure the web font is loaded first
+      try {
+        await document.fonts.load('10px "Source Code Pro"');
+      } catch {
+        // ignore, fall back to measuring with whatever font is available
+      }
+      return layoutGraph(egraph, getNodeSize, aspectRatio, selectedNodes, previousLayout, mergeEdges, signal);
+    },
     staleTime: Infinity,
     retry: false,
     retryOnMount: false,

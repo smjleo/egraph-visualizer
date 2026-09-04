@@ -12,6 +12,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        mono: ['"Source Code Pro"', ...defaultTheme.fontFamily.mono],
+      },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

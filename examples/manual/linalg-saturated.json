@@ -1,0 +1,90 @@
+{
+  "nodes": {
+    "sum": {
+      "op": "Sum",
+      "children": [
+        "acc",
+        "b*(a*alpha)"
+      ],
+      "eclass": "sum"
+    },
+    "b*(a*alpha)": {
+      "op": "Mul",
+      "children": [
+        "b",
+        "a*alpha"
+      ],
+      "eclass": "product"
+    },
+    "(a*alpha)*b": {
+      "op": "Mul",
+      "children": [
+        "a*alpha",
+        "b"
+      ],
+      "eclass": "product"
+    },
+    "alpha*(a*b)": {
+      "op": "Mul",
+      "children": [
+        "alpha",
+        "a*b"
+      ],
+      "eclass": "product"
+    },
+    "a*alpha": {
+      "op": "Mul",
+      "children": [
+        "a",
+        "alpha"
+      ],
+      "eclass": "a_alpha"
+    },
+    "alpha*a": {
+      "op": "Mul",
+      "children": [
+        "alpha",
+        "a"
+      ],
+      "eclass": "a_alpha"
+    },
+    "a*b": {
+      "op": "Mul",
+      "children": [
+        "a",
+        "b"
+      ],
+      "eclass": "a_b"
+    },
+    "acc": {
+      "op": "%acc",
+      "eclass": "acc"
+    },
+    "a": {
+      "op": "%a",
+      "eclass": "a"
+    },
+    "b": {
+      "op": "%b",
+      "eclass": "b"
+    },
+    "alpha": {
+      "op": "%alpha",
+      "eclass": "alpha"
+    }
+  },
+  "class_data": {
+    "sum": {
+      "type": "f64"
+    },
+    "product": {
+      "type": "f64"
+    },
+    "a_alpha": {
+      "type": "f64"
+    },
+    "a_b": {
+      "type": "f64"
+    }
+  }
+}
