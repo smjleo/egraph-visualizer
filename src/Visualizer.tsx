@@ -4,6 +4,7 @@ import "./react-aria-components-tailwind-starter/src/theme/accent-colors.css";
 import "./react-aria-components-tailwind-starter/src/theme/avatar-initial-colors.css";
 import "@xyflow/react/dist/style.css";
 import {
+  ArrowDownTrayIcon,
   ArrowLongRightIcon,
   ArrowUturnRightIcon,
   Bars2Icon,
@@ -50,6 +51,7 @@ import { FlowClass, FlowEdge, FlowNode, layoutGraph, PreviousLayout, SelectedNod
 import { queryClient } from "./queryClient";
 import { Loading } from "./Loading";
 import { Slider, SliderOutput, SliderTack } from "./react-aria-components-tailwind-starter/src/slider";
+import { downloadSVG, graphToSVG } from "./svg";
 
 export function EClassNode({ data, selected }: NodeProps<FlowClass>) {
   // Create one div per extra node
@@ -267,6 +269,7 @@ function Rendering({
 
   const [isOpen, setOpen] = useState(false);
   const clipboard = useCopyToClipboard();
+  const onDownloadSVG = useCallback(() => downloadSVG(graphToSVG(nodes, edges), "egraph.svg"), [nodes, edges]);
   return (
     <ReactFlow
       nodes={nodes}
@@ -336,6 +339,13 @@ function Rendering({
                     ? `Failed to copy ELK JSON to clipboard ${clipboard.error.message}`
                     : "Copy ELK JSON to clipboard"}
                 </MenuItemDescription>
+              </MenuItem>
+              <MenuItem onAction={onDownloadSVG} className="cursor-pointer">
+                <AccessibleIcon>
+                  <ArrowDownTrayIcon />
+                </AccessibleIcon>
+                <MenuItemLabel>Download SVG</MenuItemLabel>
+                <MenuItemDescription>Save the current visualization as an SVG file</MenuItemDescription>
               </MenuItem>
             </Menu>
           </MenuPopover>
