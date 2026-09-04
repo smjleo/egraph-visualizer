@@ -123,9 +123,11 @@ export function graphToSVG(nodes: (FlowClass | FlowNode)[], edges: FlowEdge[]): 
     `<?xml version="1.0" encoding="UTF-8"?>\n` +
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox.join(" ")}" width="${viewBox[2]}" height="${viewBox[3]}" font-family='${fontFamily}'>\n` +
     `${defs}\n` +
-    `<g id="edges">${edges.map(renderEdge).join("\n")}</g>\n` +
+    // Edges are drawn last so that they are painted on top of the e-class backgrounds, as on screen.
+    // Otherwise the segment between an e-node and the border of its e-class would be hidden.
     `<g id="classes">${classes.map(renderClass).join("\n")}</g>\n` +
     `<g id="nodes">${eNodes.map((node) => renderNode(node, classPositions)).join("\n")}</g>\n` +
+    `<g id="edges">${edges.map(renderEdge).join("\n")}</g>\n` +
     `</svg>\n`
   );
 }
